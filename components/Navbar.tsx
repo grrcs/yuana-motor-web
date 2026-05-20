@@ -40,9 +40,9 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-3">
-            <div className="relative w-32 h-10">
+            <div className="relative w-40 h-12">
               <Image 
-                src="/logo-ym98.svg" 
+                src="/logo-ym98.png" 
                 alt="YM98 Garage Logo" 
                 fill
                 className="object-contain"
