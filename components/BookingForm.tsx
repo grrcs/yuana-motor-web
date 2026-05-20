@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState } from "react";
-import { Calendar, Clock, User, Phone, Bike } from "lucide-react";
+import { motion } from "framer-motion";
+import { Calendar, Clock, User, Phone, Car, MessageSquare } from "lucide-react";
 
 export default function BookingForm() {
   const [formData, setFormData] = useState({
@@ -12,48 +12,52 @@ export default function BookingForm() {
     service: "",
     date: "",
     time: "",
+    notes: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Halo, saya ingin booking servis:%0A%0ANama: ${formData.name}%0ANo. HP: ${formData.phone}%0AKendaraan: ${formData.vehicle}%0ALayanan: ${formData.service}%0ATanggal: ${formData.date}%0AWaktu: ${formData.time}`;
+    
+    const message = `Halo, saya ingin booking servis:%0A%0ANama: ${formData.name}%0ANo. HP: ${formData.phone}%0AKendaraan: ${formData.vehicle}%0ALayanan: ${formData.service}%0ATanggal: ${formData.date}%0AWaktu: ${formData.time}%0ACatatan: ${formData.notes || "-"}`;
+    
     window.open(`https://wa.me/6282243456696?text=${message}`, "_blank");
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
-    <section id="booking" className="py-20 bg-dark-800">
+    <section id="booking" className="py-20 bg-neutral-900">
       <div className="container mx-auto px-4 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Booking <span className="text-racing-yellow">Servis</span>
-          </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Isi form di bawah untuk booking servis kendaraan Anda
-          </p>
-        </motion.div>
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="section-label">
+              Booking
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Booking Servis Online
+            </h2>
+            <p className="text-neutral-400">
+              Isi form di bawah untuk booking servis kendaraan Anda
+            </p>
+          </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-2xl mx-auto"
-        >
-          <form onSubmit={handleSubmit} className="bg-dark-900 border border-gray-800 p-8 rounded-lg space-y-6">
+          <motion.form
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            onSubmit={handleSubmit}
+            className="card p-8 space-y-6"
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  <User className="inline mr-2" size={16} />
+                  <User className="inline w-4 h-4 mr-2" />
                   Nama Lengkap
                 </label>
                 <input
@@ -62,15 +66,15 @@ export default function BookingForm() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full bg-dark-800 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-racing-yellow"
-                  placeholder="Nama Anda"
+                  className="input-field"
+                  placeholder="Masukkan nama Anda"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  <Phone className="inline mr-2" size={16} />
-                  No. Telepon
+                  <Phone className="inline w-4 h-4 mr-2" />
+                  No. WhatsApp
                 </label>
                 <input
                   type="tel"
@@ -78,51 +82,51 @@ export default function BookingForm() {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="w-full bg-dark-800 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-racing-yellow"
+                  className="input-field"
                   placeholder="08xxxxxxxxxx"
                 />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                <Bike className="inline mr-2" size={16} />
-                Jenis Kendaraan
-              </label>
-              <input
-                type="text"
-                name="vehicle"
-                value={formData.vehicle}
-                onChange={handleChange}
-                required
-                className="w-full bg-dark-800 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-racing-yellow"
-                placeholder="Contoh: Honda Beat 2020"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">Jenis Layanan</label>
-              <select
-                name="service"
-                value={formData.service}
-                onChange={handleChange}
-                required
-                className="w-full bg-dark-800 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-racing-yellow"
-              >
-                <option value="">Pilih Layanan</option>
-                <option value="Ganti Oli">Ganti Oli</option>
-                <option value="Tune Up">Tune Up</option>
-                <option value="Turun Mesin">Turun Mesin</option>
-                <option value="Kelistrikan">Kelistrikan</option>
-                <option value="Servis Berkala">Servis Berkala</option>
-                <option value="Diagnosa Mesin">Diagnosa Mesin</option>
-              </select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  <Calendar className="inline mr-2" size={16} />
+                  <Car className="inline w-4 h-4 mr-2" />
+                  Jenis Kendaraan
+                </label>
+                <input
+                  type="text"
+                  name="vehicle"
+                  value={formData.vehicle}
+                  onChange={handleChange}
+                  required
+                  className="input-field"
+                  placeholder="Contoh: Honda Beat 2020"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  <MessageSquare className="inline w-4 h-4 mr-2" />
+                  Jenis Layanan
+                </label>
+                <select
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
+                  required
+                  className="input-field"
+                >
+                  <option value="">Pilih layanan</option>
+                  <option value="Servis Rutin">Servis Rutin</option>
+                  <option value="Ganti Oli">Ganti Oli</option>
+                  <option value="Tune Up">Tune Up</option>
+                  <option value="Perbaikan Mesin">Perbaikan Mesin</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  <Calendar className="inline w-4 h-4 mr-2" />
                   Tanggal
                 </label>
                 <input
@@ -131,13 +135,13 @@ export default function BookingForm() {
                   value={formData.date}
                   onChange={handleChange}
                   required
-                  className="w-full bg-dark-800 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-racing-yellow"
+                  className="input-field"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  <Clock className="inline mr-2" size={16} />
+                  <Clock className="inline w-4 h-4 mr-2" />
                   Waktu
                 </label>
                 <select
@@ -145,25 +149,43 @@ export default function BookingForm() {
                   value={formData.time}
                   onChange={handleChange}
                   required
-                  className="w-full bg-dark-800 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-racing-yellow"
+                  className="input-field"
                 >
-                  <option value="">Pilih Waktu</option>
+                  <option value="">Pilih waktu</option>
                   <option value="08:00">08:00</option>
+                  <option value="09:00">09:00</option>
                   <option value="10:00">10:00</option>
+                  <option value="11:00">11:00</option>
                   <option value="13:00">13:00</option>
+                  <option value="14:00">14:00</option>
                   <option value="15:00">15:00</option>
+                  <option value="16:00">16:00</option>
                 </select>
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Catatan (Opsional)
+              </label>
+              <textarea
+                name="notes"
+                value={formData.notes}
+                onChange={handleChange}
+                rows={4}
+                className="input-field resize-none"
+                placeholder="Tambahkan catatan atau keluhan kendaraan..."
+              />
+            </div>
+
             <button
               type="submit"
-              className="w-full bg-racing-yellow text-dark-900 py-3 rounded font-semibold hover:bg-yellow-500 transition-colors"
+              className="btn-primary w-full"
             >
-              Kirim via WhatsApp
+              Kirim Booking via WhatsApp
             </button>
-          </form>
-        </motion.div>
+          </motion.form>
+        </div>
       </div>
     </section>
   );

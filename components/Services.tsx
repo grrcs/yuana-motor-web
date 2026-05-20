@@ -1,65 +1,62 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Droplet, Zap, Settings, Wrench, Gauge, Stethoscope } from "lucide-react";
+import { Wrench, Droplet, Zap, Settings, Car, Bike } from "lucide-react";
 
 const services = [
   {
+    icon: Wrench,
+    title: "Servis Rutin",
+    description: "Perawatan berkala untuk performa optimal kendaraan Anda",
+    price: "Mulai dari Rp 50.000",
+  },
+  {
     icon: Droplet,
     title: "Ganti Oli",
-    description: "Penggantian oli mesin berkala dengan oli berkualitas",
-    price: "Mulai dari Rp 50.000",
+    description: "Penggantian oli mesin dengan produk berkualitas",
+    price: "Mulai dari Rp 75.000",
   },
   {
     icon: Zap,
     title: "Tune Up",
-    description: "Perawatan menyeluruh untuk performa optimal",
+    description: "Optimalisasi performa mesin kendaraan",
     price: "Mulai dari Rp 150.000",
   },
   {
     icon: Settings,
-    title: "Turun Mesin",
-    description: "Overhaul mesin lengkap dengan garansi",
-    price: "Mulai dari Rp 800.000",
+    title: "Perbaikan Mesin",
+    description: "Diagnosa dan perbaikan masalah mesin",
+    price: "Harga bervariasi",
   },
   {
-    icon: Wrench,
-    title: "Kelistrikan",
-    description: "Perbaikan sistem kelistrikan kendaraan",
-    price: "Mulai dari Rp 100.000",
+    icon: Car,
+    title: "Servis Mobil",
+    description: "Perawatan lengkap untuk mobil Anda",
+    price: "Mulai dari Rp 200.000",
   },
   {
-    icon: Gauge,
-    title: "Servis Berkala",
-    description: "Perawatan rutin sesuai jadwal pabrikan",
-    price: "Mulai dari Rp 100.000",
-  },
-  {
-    icon: Stethoscope,
-    title: "Diagnosa Mesin",
-    description: "Pemeriksaan menyeluruh kondisi mesin",
-    price: "Mulai dari Rp 75.000",
+    icon: Bike,
+    title: "Servis Motor",
+    description: "Perawatan lengkap untuk motor Anda",
+    price: "Mulai dari Rp 50.000",
   },
 ];
 
 export default function Services() {
   return (
-    <section id="services" className="py-20 bg-dark-800">
+    <section id="services" className="py-20 bg-neutral-900">
       <div className="container mx-auto px-4 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Layanan <span className="text-racing-yellow">Kami</span>
+        <div className="text-center mb-16">
+          <span className="section-label">
+            Layanan Kami
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Layanan Servis Profesional
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Berbagai layanan perawatan dan perbaikan kendaraan
+          <p className="text-neutral-400 max-w-2xl mx-auto">
+            Berbagai layanan perawatan dan perbaikan kendaraan dengan harga terjangkau
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => (
@@ -67,34 +64,28 @@ export default function Services() {
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-dark-900 border border-gray-800 p-6 rounded-lg hover:border-racing-yellow/50 transition-colors"
+              viewport={{ once: true }}
+              className="card card-hover p-6"
             >
-              <div className="w-12 h-12 bg-racing-yellow/10 rounded flex items-center justify-center mb-4">
-                <service.icon className="text-racing-yellow" size={24} />
+              <div className="w-14 h-14 bg-brand-600/10 rounded-xl flex items-center justify-center mb-4">
+                <service.icon className="w-7 h-7 text-brand-500" />
               </div>
-              <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-              <p className="text-gray-400 mb-4">{service.description}</p>
-              <p className="text-racing-yellow font-semibold">{service.price}</p>
+              <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+              <p className="text-neutral-400 mb-4">{service.description}</p>
+              <p className="text-brand-500 font-semibold">{service.price}</p>
             </motion.div>
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-12"
-        >
+        <div className="text-center mt-12">
           <a
             href="#booking"
-            className="inline-block bg-racing-yellow text-dark-900 px-8 py-3 rounded font-semibold hover:bg-yellow-500 transition-colors"
+            className="btn-primary"
           >
             Booking Sekarang
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
