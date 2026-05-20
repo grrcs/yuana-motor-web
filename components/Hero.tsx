@@ -12,7 +12,7 @@ export default function Hero() {
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=2000')",
+            backgroundImage: "url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=2000')",
           }}
         />
       </div>
@@ -26,15 +26,15 @@ export default function Hero() {
             transition={{ duration: 0.6 }}
           >
             <span className="section-label">
-              Bengkel Terpercaya Sejak 2014
+              Bengkel Motor Terpercaya Sejak 2017
             </span>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Servis Kendaraan Profesional
+              Spesialis Servis Motor Profesional
             </h1>
 
             <p className="text-lg text-neutral-400 mb-10 max-w-2xl mx-auto">
-              Perawatan dan perbaikan kendaraan dengan mekanik bersertifikat dan sparepart berkualitas.
+              Perawatan dan perbaikan motor dengan mekanik berpengalaman dan sparepart original berkualitas.
             </p>
 
             {/* CTA Buttons */}

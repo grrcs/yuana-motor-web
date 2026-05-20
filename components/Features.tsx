@@ -6,23 +6,23 @@ import { Shield, Clock, Wrench, Award } from "lucide-react";
 const features = [
   {
     icon: Shield,
-    title: "Garansi Servis",
-    description: "Garansi untuk setiap pekerjaan yang kami lakukan",
+    title: "Garansi Servis Motor",
+    description: "Garansi untuk setiap pekerjaan servis motor yang kami lakukan",
   },
   {
     icon: Clock,
-    title: "Servis Cepat",
-    description: "Pengerjaan efisien tanpa mengurangi kualitas",
+    title: "Servis Motor Cepat",
+    description: "Pengerjaan efisien tanpa mengurangi kualitas hasil servis",
   },
   {
     icon: Wrench,
-    title: "Mekanik Ahli",
-    description: "Tim mekanik berpengalaman dan bersertifikat",
+    title: "Mekanik Motor Ahli",
+    description: "Tim mekanik berpengalaman khusus motor semua merk",
   },
   {
     icon: Award,
-    title: "Sparepart Original",
-    description: "Menggunakan sparepart berkualitas dan terjamin",
+    title: "Sparepart Motor Original",
+    description: "Menggunakan sparepart motor original dan berkualitas terjamin",
   },
 ];
 

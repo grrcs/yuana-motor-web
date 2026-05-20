@@ -1,44 +1,44 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Wrench, Droplet, Zap, Settings, Car, Bike } from "lucide-react";
+import { Wrench, Droplet, Zap, Settings, Gauge, Shield } from "lucide-react";
 
 const services = [
   {
     icon: Wrench,
-    title: "Servis Rutin",
-    description: "Perawatan berkala untuk performa optimal kendaraan Anda",
+    title: "Servis Rutin Motor",
+    description: "Perawatan berkala untuk performa optimal motor Anda",
     price: "Mulai dari Rp 50.000",
   },
   {
     icon: Droplet,
-    title: "Ganti Oli",
-    description: "Penggantian oli mesin dengan produk berkualitas",
+    title: "Ganti Oli Motor",
+    description: "Penggantian oli mesin dengan produk original berkualitas",
     price: "Mulai dari Rp 75.000",
   },
   {
     icon: Zap,
-    title: "Tune Up",
-    description: "Optimalisasi performa mesin kendaraan",
+    title: "Tune Up Motor",
+    description: "Optimalisasi performa mesin motor untuk akselerasi maksimal",
     price: "Mulai dari Rp 150.000",
   },
   {
     icon: Settings,
-    title: "Perbaikan Mesin",
-    description: "Diagnosa dan perbaikan masalah mesin",
+    title: "Perbaikan Mesin Motor",
+    description: "Diagnosa dan perbaikan masalah mesin motor semua merk",
     price: "Harga bervariasi",
   },
   {
-    icon: Car,
-    title: "Servis Mobil",
-    description: "Perawatan lengkap untuk mobil Anda",
-    price: "Mulai dari Rp 200.000",
+    icon: Gauge,
+    title: "Ganti Sparepart",
+    description: "Penggantian sparepart original untuk semua jenis motor",
+    price: "Sesuai sparepart",
   },
   {
-    icon: Bike,
-    title: "Servis Motor",
-    description: "Perawatan lengkap untuk motor Anda",
-    price: "Mulai dari Rp 50.000",
+    icon: Shield,
+    title: "Overhaul Mesin",
+    description: "Perbaikan menyeluruh mesin motor dengan garansi",
+    price: "Mulai dari Rp 500.000",
   },
 ];
 
@@ -51,10 +51,10 @@ export default function Services() {
             Layanan Kami
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Layanan Servis Profesional
+            Layanan Servis Motor Profesional
           </h2>
           <p className="text-neutral-400 max-w-2xl mx-auto">
-            Berbagai layanan perawatan dan perbaikan kendaraan dengan harga terjangkau
+            Berbagai layanan perawatan dan perbaikan motor dengan harga terjangkau dan garansi
           </p>
         </div>
 
