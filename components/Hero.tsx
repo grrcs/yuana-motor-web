@@ -40,7 +40,7 @@ export default function Hero() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
-                href="https://wa.me/6281234567890"
+                href="https://wa.me/6282243456696"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 bg-racing-yellow text-dark-900 px-8 py-3 rounded font-semibold hover:bg-yellow-500 transition-colors w-full sm:w-auto justify-center"

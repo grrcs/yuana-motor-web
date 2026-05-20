@@ -83,12 +83,12 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-gray-400">
                 <MapPin size={20} className="text-racing-yellow flex-shrink-0 mt-1" />
-                <span>Jl. Raya Utama No. 123, Jakarta Selatan, DKI Jakarta 12345</span>
+                <span>Jl. Raya Wonogiri-Ponorogo No.468, Jatibedug, Purworejo, Kec. Wonogiri, Kabupaten Wonogiri, Jawa Tengah 57615</span>
               </li>
               <li className="flex items-center gap-3 text-gray-400">
                 <Phone size={20} className="text-racing-yellow flex-shrink-0" />
-                <a href="tel:+6281234567890" className="hover:text-racing-yellow transition-colors">
-                  +62 812-3456-7890
+                <a href="tel:+6282243456696" className="hover:text-racing-yellow transition-colors">
+                  +62 822-4345-6696
                 </a>
               </li>
               <li className="flex items-center gap-3 text-gray-400">
@@ -107,15 +107,15 @@ export default function Footer() {
               <li className="flex items-center gap-3">
                 <Clock size={20} className="text-racing-yellow flex-shrink-0" />
                 <div>
-                  <p className="font-semibold text-white">Senin - Sabtu</p>
-                  <p>08:00 - 17:00 WIB</p>
+                  <p className="font-semibold text-white">Shift 1</p>
+                  <p>09:00 - 18:00 WIB</p>
                 </div>
               </li>
               <li className="flex items-center gap-3">
                 <Clock size={20} className="text-racing-yellow flex-shrink-0" />
                 <div>
-                  <p className="font-semibold text-white">Minggu</p>
-                  <p>Tutup</p>
+                  <p className="font-semibold text-white">Shift 2</p>
+                  <p>20:00 - 04:00 WIB</p>
                 </div>
               </li>
             </ul>
@@ -125,7 +125,7 @@ export default function Footer() {
         {/* Google Maps */}
         <div className="mb-8 rounded-xl overflow-hidden">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613!3d-6.194830999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5d2e764b12d%3A0x3d2ad6e1e0e9bcc8!2sMonas!5e0!3m2!1sen!2sid!4v1234567890"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.0!2d110.96593297091506!3d-7.815391769876915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwNDgnNTUuNCJTIDExMMKwNTcnNTcuNCJF!5e0!3m2!1sid!2sid"
             width="100%"
             height="300"
             style={{ border: 0 }}

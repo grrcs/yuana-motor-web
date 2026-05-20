@@ -28,70 +28,68 @@ export default function Navbar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "glass shadow-lg py-3"
+          ? "bg-neutral-950/95 backdrop-blur-sm border-b border-neutral-800 py-3"
           : "bg-transparent py-5"
       }`}
     >
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-2 cursor-pointer"
-          >
-            <div className="bg-racing-yellow p-2 rounded-lg">
-              <Wrench className="w-6 h-6 text-dark-900" />
+          <a href="#home" className="flex items-center gap-2.5">
+            <div className="bg-brand-600 p-1.5 rounded-md">
+              <Wrench className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-white">
-              Yuana <span className="text-racing-yellow">Motor</span>
+            <span className="text-lg font-semibold text-white tracking-tight">
+              Yuana <span className="text-neutral-400 font-normal">Motor</span>
             </span>
-          </motion.div>
+          </a>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-7">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-gray-300 hover:text-racing-yellow transition-colors duration-200 font-medium"
+                className="text-sm text-neutral-400 hover:text-neutral-100 transition-colors duration-200"
               >
                 {link.name}
               </a>
             ))}
-            <motion.a
+            <a
               href="#booking"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-racing-yellow text-dark-900 px-6 py-2.5 rounded-lg font-semibold hover:bg-yellow-500 transition-colors"
+              className="btn-primary text-sm py-2 px-5"
             >
               Booking Servis
-            </motion.a>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-white p-2"
+            className="md:hidden text-neutral-400 hover:text-white p-1.5 transition-colors"
+            aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="md:hidden mt-4 glass rounded-lg p-4"
+            transition={{ duration: 0.2 }}
+            className="md:hidden mt-3 bg-neutral-900 border border-neutral-800 rounded-xl p-4"
           >
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block py-3 text-gray-300 hover:text-racing-yellow transition-colors"
+                className="block py-2.5 text-sm text-neutral-400 hover:text-neutral-100 transition-colors border-b border-neutral-800 last:border-0"
               >
                 {link.name}
               </a>
@@ -99,7 +97,7 @@ export default function Navbar() {
             <a
               href="#booking"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block mt-3 bg-racing-yellow text-dark-900 px-6 py-2.5 rounded-lg font-semibold text-center"
+              className="block mt-3 btn-primary text-sm text-center"
             >
               Booking Servis
             </a>

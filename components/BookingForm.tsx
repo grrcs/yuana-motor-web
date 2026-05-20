@@ -17,7 +17,7 @@ export default function BookingForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const message = `Halo, saya ingin booking servis:%0A%0ANama: ${formData.name}%0ANo. HP: ${formData.phone}%0AKendaraan: ${formData.vehicle}%0ALayanan: ${formData.service}%0ATanggal: ${formData.date}%0AWaktu: ${formData.time}`;
-    window.open(`https://wa.me/6281234567890?text=${message}`, "_blank");
+    window.open(`https://wa.me/6282243456696?text=${message}`, "_blank");
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

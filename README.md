@@ -176,11 +176,11 @@ Edit komponen di folder `components/` sesuai kebutuhan.
 
 ## 📞 Contact Information
 
-- **Alamat**: Jl. Raya Otomotif No. 123, Jakarta Selatan
-- **Telepon**: (021) 1234-5678
-- **WhatsApp**: +62 812-3456-7890
+- **Alamat**: Jl. Raya Wonogiri-Ponorogo No.468, Jatibedug, Purworejo, Kec. Wonogiri, Kabupaten Wonogiri, Jawa Tengah 57615
+- **Telepon**: +62 822-4345-6696
+- **WhatsApp**: +62 822-4345-6696
 - **Email**: info@yuanamotor.com
-- **Jam Operasional**: Senin - Sabtu: 08.00 - 18.00 WIB
+- **Jam Operasional**: Shift 1: 09.00 - 18.00 WIB | Shift 2: 20.00 - 04.00 WIB
 
 ## 📝 License
 

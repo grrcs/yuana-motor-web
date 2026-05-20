@@ -4,16 +4,32 @@
 
 @layer base {
   body {
-    @apply bg-dark-900 text-white antialiased;
+    @apply bg-neutral-950 text-neutral-200 antialiased;
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  .card {
+    @apply bg-neutral-800 border border-neutral-700 rounded-xl;
   }
-  
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-racing-yellow via-racing-red to-racing-blue;
+
+  .card-hover {
+    @apply hover:border-neutral-600 hover:bg-neutral-700/60 transition-all duration-200;
+  }
+
+  .text-accent {
+    @apply text-brand-500;
+  }
+
+  .btn-primary {
+    @apply bg-brand-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-brand-700 transition-colors duration-200;
+  }
+
+  .btn-outline {
+    @apply border border-neutral-600 text-neutral-200 font-semibold px-6 py-3 rounded-lg hover:border-neutral-400 hover:bg-neutral-800 transition-all duration-200;
+  }
+
+  .section-label {
+    @apply inline-block text-xs font-semibold tracking-widest uppercase text-brand-500 mb-3;
   }
 }
