@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Menu, X, Wrench } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -38,13 +39,16 @@ export default function Navbar() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-2.5">
-            <div className="bg-brand-600 p-1.5 rounded-md">
-              <Wrench className="w-5 h-5 text-white" />
+          <a href="#home" className="flex items-center gap-3">
+            <div className="relative w-32 h-10">
+              <Image 
+                src="/logo-ym98.svg" 
+                alt="YM98 Garage Logo" 
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
-            <span className="text-lg font-semibold text-white tracking-tight">
-              Yuana <span className="text-neutral-400 font-normal">Motor</span>
-            </span>
           </a>
 
           {/* Desktop Menu */}

@@ -10,11 +10,15 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          50:  "#f0f9ff",
-          100: "#e0f2fe",
-          500: "#0ea5e9",
-          600: "#0284c7",
-          700: "#0369a1",
+          50:  "#fff7ed",
+          100: "#ffedd5",
+          500: "#ff8c00", // Orange dari logo
+          600: "#ea7c00",
+          700: "#c66900",
+        },
+        accent: {
+          500: "#ffd700", // Kuning dari logo
+          600: "#eac500",
         },
         neutral: {
           950: "#09090b",
