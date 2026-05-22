@@ -15,10 +15,24 @@ export default function BookingForm() {
     notes: "",
   });
 
+  // Mendapatkan tanggal hari ini format YYYY-MM-DD untuk batas minimal input date
+  const today = new Date().toISOString().split("T")[0];
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const message = `Halo, saya ingin booking servis:%0A%0ANama: ${formData.name}%0ANo. HP: ${formData.phone}%0AKendaraan: ${formData.vehicle}%0ALayanan: ${formData.service}%0ATanggal: ${formData.date}%0AWaktu: ${formData.time}%0ACatatan: ${formData.notes || "-"}`;
+    // Teks pesan mentah yang lebih mudah dibaca di dalam kode
+    const rawMessage = `Halo, saya ingin booking servis:\n\n` +
+      `Nama: ${formData.name}\n` +
+      `No. HP: ${formData.phone}\n` +
+      `Kendaraan: ${formData.vehicle}\n` +
+      `Layanan: ${formData.service}\n` +
+      `Tanggal: ${formData.date}\n` +
+      `Waktu: ${formData.time}\n` +
+      `Catatan: ${formData.notes || "-"}`;
+    
+    // Mengamankan teks pesan agar valid saat masuk ke URL WhatsApp
+    const message = encodeURIComponent(rawMessage);
     
     window.open(`https://wa.me/6282243456696?text=${message}`, "_blank");
   };
@@ -31,13 +45,11 @@ export default function BookingForm() {
   };
 
   return (
-    <section id="booking" className="py-20 bg-neutral-900">
+    <section id="booking" className="py-20 bg-neutral-900 text-white">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <span className="section-label">
-              Booking
-            </span>
+            <span className="section-label">Booking</span>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Booking Servis Online
             </h2>
@@ -52,7 +64,7 @@ export default function BookingForm() {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
             onSubmit={handleSubmit}
-            className="card p-8 space-y-6"
+            className="card p-8 space-y-6 bg-neutral-800 rounded-xl"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -66,7 +78,7 @@ export default function BookingForm() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="input-field"
+                  className="input-field w-full p-2 rounded bg-neutral-700 text-white"
                   placeholder="Masukkan nama Anda"
                 />
               </div>
@@ -82,7 +94,7 @@ export default function BookingForm() {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="input-field"
+                  className="input-field w-full p-2 rounded bg-neutral-700 text-white"
                   placeholder="08xxxxxxxxxx"
                 />
               </div>
@@ -98,7 +110,7 @@ export default function BookingForm() {
                   value={formData.vehicle}
                   onChange={handleChange}
                   required
-                  className="input-field"
+                  className="input-field w-full p-2 rounded bg-neutral-700 text-white"
                   placeholder="Contoh: Honda Beat 2020"
                 />
               </div>
@@ -113,7 +125,7 @@ export default function BookingForm() {
                   value={formData.service}
                   onChange={handleChange}
                   required
-                  className="input-field"
+                  className="input-field w-full p-2 rounded bg-neutral-700 text-white"
                 >
                   <option value="">Pilih layanan</option>
                   <option value="Servis Rutin">Servis Rutin</option>
@@ -132,10 +144,11 @@ export default function BookingForm() {
                 <input
                   type="date"
                   name="date"
+                  min={today} /* Mencegah user memilih tanggal sebelum hari ini */
                   value={formData.date}
                   onChange={handleChange}
                   required
-                  className="input-field"
+                  className="input-field w-full p-2 rounded bg-neutral-700 text-white"
                 />
               </div>
 
@@ -149,7 +162,7 @@ export default function BookingForm() {
                   value={formData.time}
                   onChange={handleChange}
                   required
-                  className="input-field"
+                  className="input-field w-full p-2 rounded bg-neutral-700 text-white"
                 >
                   <option value="">Pilih waktu</option>
                   <option value="08:00">08:00</option>
@@ -173,14 +186,14 @@ export default function BookingForm() {
                 value={formData.notes}
                 onChange={handleChange}
                 rows={4}
-                className="input-field resize-none"
+                className="input-field w-full p-2 rounded bg-neutral-700 text-white resize-none"
                 placeholder="Tambahkan catatan atau keluhan kendaraan..."
               />
             </div>
 
             <button
               type="submit"
-              className="btn-primary w-full"
+              className="btn-primary w-full p-3 bg-green-600 hover:bg-green-700 font-semibold rounded transition"
             >
               Kirim Booking via WhatsApp
             </button>
