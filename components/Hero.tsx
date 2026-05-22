@@ -30,7 +30,7 @@ export default function Hero() {
             </span>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Spesialis Servis Motor Profesional
+              Cepat, Tepat, Ora Ngapusi.
             </h1>
 
             <p className="text-lg text-neutral-400 mb-10 max-w-2xl mx-auto">
