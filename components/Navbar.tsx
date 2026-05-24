@@ -23,6 +23,7 @@ export default function Navbar() {
     { name: "Keunggulan", href: "#features" },
     { name: "Testimoni", href: "#testimonials" },
     { name: "Kontak", href: "#contact" },
+    { name: "Cek Booking", href: "/cek-booking" },
   ];
 
   return (
