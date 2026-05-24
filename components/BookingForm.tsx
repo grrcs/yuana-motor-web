@@ -32,11 +32,18 @@ export default function BookingForm() {
     setSubmitStatus({ type: null, message: '' });
 
     try {
+      // Generate booking number di frontend
+      const now = new Date();
+      const dateStr = now.toISOString().split('T')[0].replace(/-/g, ''); // YYYYMMDD
+      const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+      const bookingNumber = `BK-${dateStr}-${randomNum}`;
+
       // Simpan ke database
       const { data, error } = await supabase
         .from('bookings')
         .insert([
           {
+            booking_number: bookingNumber,
             name: formData.name,
             phone: formData.phone,
             vehicle: formData.vehicle,
@@ -53,27 +60,11 @@ export default function BookingForm() {
       if (error) throw error;
 
       // Sukses simpan ke database
-      const bookingNumber = data.booking_number;
-      
       setSubmitStatus({
         type: 'success',
         message: `Booking berhasil! Nomor booking: ${bookingNumber}`,
         bookingNumber
       });
-
-      // Kirim ke WhatsApp
-      const rawMessage = `Halo, saya ingin booking servis:\n\n` +
-        `Nomor Booking: ${bookingNumber}\n` +
-        `Nama: ${formData.name}\n` +
-        `No. HP: ${formData.phone}\n` +
-        `Kendaraan: ${formData.vehicle}\n` +
-        `Layanan: ${formData.service}\n` +
-        `Tanggal: ${formData.date}\n` +
-        `Waktu: ${formData.time}\n` +
-        `Catatan: ${formData.notes || "-"}`;
-      
-      const message = encodeURIComponent(rawMessage);
-      window.open(`https://wa.me/6282243456696?text=${message}`, "_blank");
 
       // Reset form
       setFormData({
@@ -114,7 +105,7 @@ export default function BookingForm() {
               Booking Servis Online
             </h2>
             <p className="text-neutral-400">
-              Isi form di bawah untuk booking servis kendaraan Anda
+              Booking servis resmi dengan nomor booking. Cek status booking di menu "Cek Booking"
             </p>
           </div>
 
@@ -290,9 +281,9 @@ export default function BookingForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-primary w-full p-3 bg-green-600 hover:bg-green-700 font-semibold rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary w-full p-3 bg-orange-500 hover:bg-orange-600 font-semibold rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Memproses...' : 'Kirim Booking via WhatsApp'}
+              {isSubmitting ? 'Memproses...' : 'Booking Sekarang'}
             </button>
           </motion.form>
         </div>

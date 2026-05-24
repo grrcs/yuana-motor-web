@@ -7,6 +7,7 @@ import Gallery from "@/components/Gallery";
 import Statistics from "@/components/Statistics";
 import Testimonials from "@/components/Testimonials";
 import BookingForm from "@/components/BookingForm";
+import ConsultationForm from "@/components/ConsultationForm";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       <Statistics />
       <Testimonials />
       <BookingForm />
+      <ConsultationForm />
       <Footer />
     </main>
   );
