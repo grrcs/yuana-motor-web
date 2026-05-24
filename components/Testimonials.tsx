@@ -12,7 +12,7 @@ const testimonials = [
   },
   {
     name: "Siti Nurhaliza",
-    role: "Pemilik Toyota Avanza",
+    role: "Pemilik Honda Win",
     content: "Servis mobil di sini selalu cepat dan hasilnya bagus. Sudah langganan 2 tahun.",
     rating: 5,
   },
