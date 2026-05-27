@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, User, Phone, Car, MessageSquare, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
 
 export default function BookingForm() {
+  const { user, profile } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -22,12 +25,63 @@ export default function BookingForm() {
     message: string;
     bookingNumber?: string;
   }>({ type: null, message: '' });
+  const [availableSlots, setAvailableSlots] = useState<number | null>(null);
+  const [checkingSlots, setCheckingSlots] = useState(false);
 
   // Mendapatkan tanggal hari ini format YYYY-MM-DD untuk batas minimal input date
   const today = new Date().toISOString().split("T")[0];
 
+  // Auto-fill form jika user sudah login
+  useEffect(() => {
+    if (user && profile) {
+      setFormData(prev => ({
+        ...prev,
+        name: profile.full_name || "",
+        phone: profile.phone || "",
+      }));
+    }
+  }, [user, profile]);
+
+  // Check slot availability ketika date dan time dipilih
+  useEffect(() => {
+    const checkSlotAvailability = async () => {
+      if (!formData.date || !formData.time) {
+        setAvailableSlots(null);
+        return;
+      }
+
+      setCheckingSlots(true);
+      try {
+        const { data, error } = await supabase.rpc('check_slot_availability', {
+          p_date: formData.date,
+          p_time: formData.time
+        });
+
+        if (error) throw error;
+        setAvailableSlots(data);
+      } catch (error) {
+        console.error('Error checking slots:', error);
+        setAvailableSlots(null);
+      } finally {
+        setCheckingSlots(false);
+      }
+    };
+
+    checkSlotAvailability();
+  }, [formData.date, formData.time]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check if slot is full
+    if (availableSlots !== null && availableSlots <= 0) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Slot penuh! Pilih tanggal atau waktu lain.'
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: '' });
 
@@ -51,7 +105,8 @@ export default function BookingForm() {
             booking_date: formData.date,
             booking_time: formData.time,
             notes: formData.notes || null,
-            status: 'pending'
+            status: 'pending',
+            user_id: user?.id || null
           }
         ])
         .select()
@@ -66,16 +121,19 @@ export default function BookingForm() {
         bookingNumber
       });
 
-      // Reset form
+      // Reset form (kecuali name dan phone jika user login)
       setFormData({
-        name: "",
-        phone: "",
+        name: user && profile ? profile.full_name || "" : "",
+        phone: user && profile ? profile.phone || "" : "",
         vehicle: "",
         service: "",
         date: "",
         time: "",
         notes: "",
       });
+
+      // Reset slot availability
+      setAvailableSlots(null);
 
     } catch (error: any) {
       console.error('Error booking:', error);
@@ -107,6 +165,11 @@ export default function BookingForm() {
             <p className="text-neutral-400">
               Booking servis resmi dengan nomor booking. Cek status booking di menu "Cek Booking"
             </p>
+            {!user && (
+              <p className="text-yellow-400 text-sm mt-2">
+                <Link href="/login" className="underline hover:text-yellow-300">Login</Link> untuk auto-fill data dan tracking booking lebih mudah
+              </p>
+            )}
           </div>
 
           {/* Status Message */}
@@ -149,6 +212,73 @@ export default function BookingForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">
+                  <Calendar className="inline w-4 h-4 mr-2" />
+                  Tanggal
+                </label>
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                  min={today}
+                  required
+                  disabled={isSubmitting}
+                  className="input-field w-full p-2 rounded bg-neutral-700 text-white disabled:opacity-50"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  <Clock className="inline w-4 h-4 mr-2" />
+                  Waktu
+                </label>
+                <select
+                  name="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                  required
+                  disabled={isSubmitting}
+                  className="input-field w-full p-2 rounded bg-neutral-700 text-white disabled:opacity-50"
+                >
+                  <option value="">Pilih waktu</option>
+                  <option value="08:00">08:00</option>
+                  <option value="09:00">09:00</option>
+                  <option value="10:00">10:00</option>
+                  <option value="11:00">11:00</option>
+                  <option value="13:00">13:00</option>
+                  <option value="14:00">14:00</option>
+                  <option value="15:00">15:00</option>
+                  <option value="16:00">16:00</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Slot Availability Indicator */}
+            {formData.date && formData.time && (
+              <div className={`p-3 rounded-lg text-sm ${
+                checkingSlots 
+                  ? 'bg-neutral-800 text-neutral-400' 
+                  : availableSlots === null
+                  ? 'bg-neutral-800 text-neutral-400'
+                  : availableSlots > 0
+                  ? 'bg-green-900/30 text-green-400 border border-green-700'
+                  : 'bg-red-900/30 text-red-400 border border-red-700'
+              }`}>
+                {checkingSlots ? (
+                  'Mengecek ketersediaan slot...'
+                ) : availableSlots === null ? (
+                  'Gagal cek slot'
+                ) : availableSlots > 0 ? (
+                  `✓ Slot tersedia: ${availableSlots} dari 3`
+                ) : (
+                  '✗ Slot penuh! Pilih tanggal atau waktu lain'
+                )}
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium mb-2">
                   <User className="inline w-4 h-4 mr-2" />
                   Nama Lengkap
                 </label>
@@ -160,7 +290,7 @@ export default function BookingForm() {
                   required
                   disabled={isSubmitting}
                   className="input-field w-full p-2 rounded bg-neutral-700 text-white disabled:opacity-50"
-                  placeholder="Masukkan nama Anda"
+                  placeholder="Nama lengkap"
                 />
               </div>
 
@@ -219,48 +349,6 @@ export default function BookingForm() {
                   <option value="Lainnya">Lainnya</option>
                 </select>
               </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  <Calendar className="inline w-4 h-4 mr-2" />
-                  Tanggal
-                </label>
-                <input
-                  type="date"
-                  name="date"
-                  min={today}
-                  value={formData.date}
-                  onChange={handleChange}
-                  required
-                  disabled={isSubmitting}
-                  className="input-field w-full p-2 rounded bg-neutral-700 text-white disabled:opacity-50"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  <Clock className="inline w-4 h-4 mr-2" />
-                  Waktu
-                </label>
-                <select
-                  name="time"
-                  value={formData.time}
-                  onChange={handleChange}
-                  required
-                  disabled={isSubmitting}
-                  className="input-field w-full p-2 rounded bg-neutral-700 text-white disabled:opacity-50"
-                >
-                  <option value="">Pilih waktu</option>
-                  <option value="08:00">08:00</option>
-                  <option value="09:00">09:00</option>
-                  <option value="10:00">10:00</option>
-                  <option value="11:00">11:00</option>
-                  <option value="13:00">13:00</option>
-                  <option value="14:00">14:00</option>
-                  <option value="15:00">15:00</option>
-                  <option value="16:00">16:00</option>
-                </select>
-              </div>
             </div>
 
             <div>
@@ -280,7 +368,7 @@ export default function BookingForm() {
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || (availableSlots !== null && availableSlots <= 0)}
               className="btn-primary w-full p-3 bg-orange-500 hover:bg-orange-600 font-semibold rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Memproses...' : 'Booking Sekarang'}

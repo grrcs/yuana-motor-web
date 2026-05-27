@@ -44,17 +44,17 @@ export default function About() {
           >
             <span className="section-label">Tentang Kami</span>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Bengkel Motor Terpercaya di Wonogiri
+              Bengkel Motor Langganan Warga Wonogiri
             </h2>
             <div className="space-y-4 text-neutral-400">
               <p>
-                <span className="text-brand-500 font-semibold">Yuana Motor</span> adalah bengkel motor profesional yang telah melayani masyarakat Wonogiri sejak tahun 2017. Kami fokus memberikan layanan servis dan perbaikan motor dengan standar kualitas terbaik.
+                <span className="text-brand-500 font-semibold">Yuana Motor</span> wis melayani masyarakat Wonogiri sejak 2017. Kita fokus kasih servis dan perbaikan motor dengan kualitas terbaik, ora asal-asalan!
               </p>
               <p>
-                Dengan pengalaman lebih dari 7 tahun, kami telah menangani berbagai jenis motor dari berbagai merek. Tim mekanik kami yang berpengalaman dan terlatih siap memberikan solusi terbaik untuk setiap permasalahan motor Anda.
+                Pengalaman lebih dari 7 tahun nangani berbagai jenis motor dari semua merk. Tim mekanik kita yang berpengalaman siap kasih solusi terbaik untuk masalah motor sampeyan. Dari servis rutin sampai overhaul, kita tangani!
               </p>
               <p>
-                Kami berkomitmen menggunakan sparepart original dan berkualitas untuk memastikan motor Anda selalu dalam kondisi prima. Kepuasan pelanggan adalah prioritas utama kami.
+                Kita komitmen pake sparepart original dan berkualitas biar motor sampeyan selalu prima. Kepuasan pelanggan adalah prioritas utama kita. Sekali servis di sini, pasti balik lagi!
               </p>
             </div>
 

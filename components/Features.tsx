@@ -6,23 +6,23 @@ import { Shield, Clock, Wrench, Award } from "lucide-react";
 const features = [
   {
     icon: Shield,
-    title: "Garansi Servis Motor",
-    description: "Garansi untuk setiap pekerjaan servis motor yang kami lakukan",
+    title: "Garansi Servis",
+    description: "Garansi untuk setiap pekerjaan servis, ora usah khawatir!",
   },
   {
     icon: Clock,
-    title: "Servis Motor Cepat",
-    description: "Pengerjaan efisien tanpa mengurangi kualitas hasil servis",
+    title: "Servis Cepet",
+    description: "Pengerjaan efisien, ora lama-lama, hasil tetep maksimal",
   },
   {
     icon: Wrench,
-    title: "Mekanik Motor Ahli",
-    description: "Tim mekanik berpengalaman khusus motor semua merk",
+    title: "Mekanik Ahli",
+    description: "Tim mekanik berpengalaman, semua merk motor bisa ditangani",
   },
   {
     icon: Award,
-    title: "Sparepart Motor Original",
-    description: "Menggunakan sparepart motor original dan berkualitas terjamin",
+    title: "Sparepart Original",
+    description: "Pake sparepart original, kualitas terjamin, ora abal-abal",
   },
 ];
 
@@ -35,10 +35,10 @@ export default function Features() {
             Keunggulan Kami
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Mengapa Memilih Yuana Motor?
+            Kenapa Milih Yuana Motor?
           </h2>
           <p className="text-neutral-400 max-w-2xl mx-auto">
-            Kami berkomitmen memberikan layanan terbaik dengan standar profesional
+            Kita komitmen kasih layanan terbaik dengan standar profesional
           </p>
         </div>
 

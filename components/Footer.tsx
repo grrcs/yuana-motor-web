@@ -15,7 +15,7 @@ export default function Footer() {
               Yuana Motor
             </h3>
             <p className="text-gray-400 mb-4 leading-relaxed">
-              Bengkel motor dan mobil terpercaya dengan layanan profesional dan harga terjangkau.
+              Bengkel motor terpercaya dengan layanan profesional dan harga terjangkau. Wis melayani warga Wonogiri sejak 2017!
             </p>
             <div className="flex gap-3">
               <a

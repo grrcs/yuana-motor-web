@@ -7,31 +7,31 @@ const services = [
   {
     icon: Wrench,
     title: "Servis Rutin Motor",
-    description: "Perawatan berkala untuk performa optimal motor Anda",
+    description: "Perawatan berkala biar motor sampeyan selalu prima",
     price: "Mulai dari Rp 50.000",
   },
   {
     icon: Droplet,
     title: "Ganti Oli Motor",
-    description: "Penggantian oli mesin dengan produk original berkualitas",
+    description: "Ganti oli mesin pake produk original, ora abal-abal",
     price: "Mulai dari Rp 75.000",
   },
   {
     icon: Zap,
     title: "Tune Up Motor",
-    description: "Optimalisasi performa mesin motor untuk akselerasi maksimal",
+    description: "Optimalisasi performa mesin biar akselerasi makin mantap",
     price: "Mulai dari Rp 150.000",
   },
   {
     icon: Settings,
     title: "Perbaikan Mesin Motor",
-    description: "Diagnosa dan perbaikan masalah mesin motor semua merk",
+    description: "Diagnosa dan benerin masalah mesin motor semua merk",
     price: "Harga bervariasi",
   },
   {
     icon: Gauge,
     title: "Ganti Sparepart",
-    description: "Penggantian sparepart original untuk semua jenis motor",
+    description: "Ganti sparepart original untuk semua jenis motor",
     price: "Sesuai sparepart",
   },
   {
@@ -54,7 +54,7 @@ export default function Services() {
             Layanan Servis Motor Profesional
           </h2>
           <p className="text-neutral-400 max-w-2xl mx-auto">
-            Berbagai layanan perawatan dan perbaikan motor dengan harga terjangkau dan garansi
+            Macem-macem layanan perawatan dan perbaikan motor dengan harga terjangkau dan garansi
           </p>
         </div>
 

@@ -1,0 +1,501 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import Image from 'next/image'
+import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabase'
+import type { Booking, Profile, LoyaltyPoint, Review } from '@/lib/supabase'
+import { Calendar, Clock, Award, TrendingUp, CheckCircle, XCircle, AlertCircle, Star, ArrowRight, MessageSquare, Wrench } from 'lucide-react'
+import ReviewForm from '@/components/ReviewForm'
+
+export default function DashboardPage() {
+  const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
+  const [profile, setProfile] = useState<Profile | null>(null)
+  const [bookings, setBookings] = useState<Booking[]>([])
+  const [loyaltyPoints, setLoyaltyPoints] = useState<LoyaltyPoint[]>([])
+  const [reviews, setReviews] = useState<Review[]>([])
+  const [loading, setLoading] = useState(true)
+  const [showReviewForm, setShowReviewForm] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/login')
+    }
+  }, [user, authLoading, router])
+
+  useEffect(() => {
+    if (user) {
+      fetchUserData()
+    }
+  }, [user])
+
+  const fetchUserData = async () => {
+    if (!user) return
+
+    try {
+      // Fetch profile
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single()
+
+      setProfile(profileData)
+
+      // Fetch bookings
+      const { data: bookingsData } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+
+      setBookings(bookingsData || [])
+
+      // Fetch loyalty points
+      const { data: pointsData } = await supabase
+        .from('loyalty_points')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+
+      setLoyaltyPoints(pointsData || [])
+
+      // Fetch reviews
+      const { data: reviewsData } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('user_id', user.id)
+
+      setReviews(reviewsData || [])
+    } catch (error) {
+      console.error('Error fetching user data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (authLoading || loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-16 h-16 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-brand-500 font-semibold">Loading dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const totalPoints = loyaltyPoints.reduce((sum, point) => sum + point.points, 0)
+  const completedBookings = bookings.filter(b => b.status === 'completed').length
+  const pendingBookings = bookings.filter(b => b.status === 'pending').length
+
+  const hasReview = (bookingId: string) => {
+    return reviews.some(r => r.booking_id === bookingId)
+  }
+
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle className="w-5 h-5" />
+      case 'cancelled':
+        return <XCircle className="w-5 h-5" />
+      case 'confirmed':
+        return <AlertCircle className="w-5 h-5" />
+      default:
+        return <Clock className="w-5 h-5" />
+    }
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'bg-green-500/10 border-green-500/30 text-green-400'
+      case 'cancelled':
+        return 'bg-red-500/10 border-red-500/30 text-red-400'
+      case 'confirmed':
+        return 'bg-blue-500/10 border-blue-500/30 text-blue-400'
+      default:
+        return 'bg-accent-500/10 border-accent-500/30 text-brand-500'
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950">
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-brand-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-brand-500/5 to-accent-500/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-8">
+        {/* Header with Logo - Enhanced */}
+        <div className="flex items-center justify-between mb-12 animate-fade-in">
+          <div className="flex items-center gap-4">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-brand-500 to-accent-500 rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
+              <Image 
+                src="/logo-ym98.png" 
+                alt="Yuana Motor Logo" 
+                width={60} 
+                height={60}
+                className="relative rounded-xl shadow-2xl transform group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-brand-500 via-accent-500 to-brand-500 bg-clip-text text-transparent animate-gradient">
+                Dashboard
+              </h1>
+              <p className="text-neutral-400 mt-1">Selamat datang, <span className="text-brand-400 font-semibold">{profile?.name || 'User'}</span>!</p>
+            </div>
+          </div>
+          <Link 
+            href="/"
+            className="group relative px-6 py-3 bg-gradient-to-r from-brand-600 to-brand-500 text-white rounded-xl overflow-hidden transition-all duration-300 shadow-lg hover:shadow-brand-500/50 hover:scale-105"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              Kembali ke Beranda
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-500 to-brand-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </Link>
+        </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
+        <div className="mb-10 animate-fade-in">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-6">
+              <div className="relative w-32 h-12">
+                <Image 
+                  src="/logo-ym98.png" 
+                  alt="YM98 Garage Logo" 
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+              <div>
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-brand-500 to-accent-500 bg-clip-text text-transparent mb-2">
+                  Dashboard
+                </h1>
+                <p className="text-neutral-400 text-lg">
+                  Selamat datang kembali, <span className="text-white font-semibold">{profile?.full_name || user?.email}</span>!
+                </p>
+              </div>
+            </div>
+            <Link 
+              href="/"
+              className="px-6 py-3 bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-700 hover:to-brand-600 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 flex items-center gap-2 shadow-lg shadow-brand-600/20"
+            >
+              Booking Baru
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Stats Cards - Enhanced with Glassmorphism */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 animate-slide-up delay-100">
+          {/* Total Points Card */}
+          <div className="group relative bg-gradient-to-br from-neutral-900/60 via-neutral-800/60 to-neutral-900/60 backdrop-blur-xl border border-neutral-700/30 rounded-2xl p-6 shadow-2xl hover:shadow-accent-500/20 transition-all duration-500 hover:scale-105 hover:border-accent-500/50 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-gradient-to-br from-accent-500/20 to-accent-600/30 rounded-xl shadow-lg group-hover:shadow-accent-500/30 transition-shadow duration-300">
+                  <Award className="w-7 h-7 text-accent-400 group-hover:scale-110 transition-transform duration-300" />
+                </div>
+                <TrendingUp className="w-5 h-5 text-green-400 group-hover:translate-y-[-2px] transition-transform duration-300" />
+              </div>
+              <h3 className="text-neutral-400 text-sm mb-2 font-medium">Total Poin Loyalitas</h3>
+              <p className="text-4xl font-bold bg-gradient-to-r from-accent-500 via-accent-400 to-accent-500 bg-clip-text text-transparent animate-gradient mb-2">
+                {totalPoints}
+              </p>
+              <p className="text-xs text-neutral-500">+10 poin per booking selesai</p>
+            </div>
+          </div>
+
+          {/* Completed Bookings Card */}
+          <div className="group relative bg-gradient-to-br from-neutral-900/60 via-neutral-800/60 to-neutral-900/60 backdrop-blur-xl border border-neutral-700/30 rounded-2xl p-6 shadow-2xl hover:shadow-green-500/20 transition-all duration-500 hover:scale-105 hover:border-green-500/50 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-gradient-to-br from-green-500/20 to-green-600/30 rounded-xl shadow-lg group-hover:shadow-green-500/30 transition-shadow duration-300">
+                  <CheckCircle className="w-7 h-7 text-green-400 group-hover:scale-110 transition-transform duration-300" />
+                </div>
+              </div>
+              <h3 className="text-neutral-400 text-sm mb-2 font-medium">Booking Selesai</h3>
+              <p className="text-4xl font-bold text-green-400 mb-2">{completedBookings}</p>
+              <p className="text-xs text-neutral-500">Total servis selesai</p>
+            </div>
+          </div>
+
+          {/* Pending Bookings Card */}
+          <div className="group relative bg-gradient-to-br from-neutral-900/60 via-neutral-800/60 to-neutral-900/60 backdrop-blur-xl border border-neutral-700/30 rounded-2xl p-6 shadow-2xl hover:shadow-brand-500/20 transition-all duration-500 hover:scale-105 hover:border-brand-500/50 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-gradient-to-br from-brand-500/20 to-brand-600/30 rounded-xl shadow-lg group-hover:shadow-brand-500/30 transition-shadow duration-300">
+                  <Clock className="w-7 h-7 text-brand-400 group-hover:scale-110 transition-transform duration-300" />
+                </div>
+              </div>
+              <h3 className="text-neutral-400 text-sm mb-2 font-medium">Booking Pending</h3>
+              <p className="text-4xl font-bold text-brand-400 mb-2">{pendingBookings}</p>
+              <p className="text-xs text-neutral-500">Menunggu konfirmasi</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Bookings Section - Enhanced */}
+        <div className="mb-12 animate-slide-up delay-200">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-gradient-to-br from-brand-500/20 to-brand-600/30 rounded-lg">
+              <Calendar className="w-6 h-6 text-brand-400" />
+            </div>
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-brand-500 via-accent-500 to-brand-500 bg-clip-text text-transparent animate-gradient">
+              Riwayat Booking
+            </h2>
+          </div>
+
+          {bookings.length === 0 ? (
+            <div className="bg-gradient-to-br from-neutral-900/60 via-neutral-800/60 to-neutral-900/60 backdrop-blur-xl border border-neutral-700/30 rounded-2xl p-12 text-center shadow-2xl">
+              <Calendar className="w-16 h-16 text-neutral-600 mx-auto mb-4" />
+              <p className="text-neutral-400 text-lg">Belum ada booking</p>
+              <p className="text-neutral-500 text-sm mt-2">Booking pertama Anda akan muncul di sini</p>
+              <Link 
+                href="/"
+                className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-gradient-to-r from-brand-500 to-accent-500 text-neutral-900 rounded-xl font-semibold hover:from-accent-500 hover:to-yellow-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-brand-500/50"
+              >
+                Buat Booking Pertama
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-4 custom-scrollbar max-h-[600px] overflow-y-auto pr-2">
+              {bookings.map((booking, index) => (
+                <div 
+                  key={booking.id}
+                  className="group relative bg-gradient-to-br from-neutral-900/60 via-neutral-800/60 to-neutral-900/60 backdrop-blur-xl border border-neutral-700/30 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-brand-500/10 transition-all duration-500 hover:scale-[1.02] hover:border-brand-500/40 overflow-hidden"
+                  style={{animationDelay: `${index * 0.1}s`}}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <div className="relative z-10">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-gradient-to-br from-brand-500/20 to-brand-600/30 rounded-lg group-hover:shadow-lg group-hover:shadow-brand-500/20 transition-shadow duration-300">
+                          <Wrench className="w-5 h-5 text-brand-400" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-white text-lg group-hover:text-brand-400 transition-colors duration-300">
+                            {booking.booking_number}
+                          </h3>
+                          <p className="text-neutral-400 text-sm">{new Date(booking.booking_date).toLocaleDateString('id-ID', { 
+                            weekday: 'long', 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                          })}</p>
+                        </div>
+                      </div>
+                      <div className={`flex items-center gap-2 px-4 py-2 rounded-xl border ${getStatusColor(booking.status)} backdrop-blur-sm transition-all duration-300 group-hover:scale-105`}>
+                        {getStatusIcon(booking.status)}
+                        <span className="font-semibold capitalize">{booking.status}</span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-neutral-300">
+                          <span className="text-neutral-500 text-sm">Layanan:</span>
+                          <span className="font-semibold text-brand-400">{booking.service}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-neutral-300">
+                          <span className="text-neutral-500 text-sm">Kendaraan:</span>
+                          <span className="font-semibold">{booking.vehicle}</span>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-neutral-300">
+                          <Clock className="w-4 h-4 text-neutral-500" />
+                          <span className="text-sm">{booking.booking_time}</span>
+                        </div>
+                        {booking.notes && (
+                          <div className="flex items-start gap-2 text-neutral-300">
+                            <MessageSquare className="w-4 h-4 text-neutral-500 mt-0.5" />
+                            <span className="text-sm">{booking.notes}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Review Section */}
+                    {booking.status === 'completed' && !hasReview(booking.id) && (
+                      <div className="mt-4 pt-4 border-t border-neutral-700/50">
+                        {showReviewForm === booking.id ? (
+                          <div className="bg-neutral-800/50 rounded-xl p-4 backdrop-blur-sm border border-neutral-700/30">
+                            <ReviewForm 
+                              bookingId={booking.id}
+                              bookingNumber={booking.booking_number}
+                              onSuccess={() => {
+                                setShowReviewForm(null)
+                                fetchUserData()
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setShowReviewForm(booking.id)}
+                            className="group/btn relative w-full px-4 py-3 bg-gradient-to-r from-accent-600 to-accent-500 text-neutral-900 rounded-xl font-semibold overflow-hidden transition-all duration-300 shadow-lg hover:shadow-accent-500/50 hover:scale-105"
+                          >
+                            <span className="relative z-10 flex items-center justify-center gap-2">
+                              <Star className="w-4 h-4 group-hover/btn:rotate-12 transition-transform duration-300" />
+                              Berikan Review
+                            </span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-accent-500 to-accent-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
+                          </button>
+                        )}
+                      </div>
+                    )}
+
+                    {booking.status === 'completed' && hasReview(booking.id) && (
+                      <div className="mt-4 pt-4 border-t border-neutral-700/50">
+                        <div className="flex items-center gap-2 text-green-400 text-sm">
+                          <CheckCircle className="w-4 h-4" />
+                          Review sudah diberikan
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Loyalty Points History - Enhanced */}
+        <div className="animate-slide-up delay-300">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-gradient-to-br from-accent-500/20 to-accent-600/30 rounded-lg">
+              <Award className="w-6 h-6 text-accent-400" />
+            </div>
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-accent-500 via-accent-400 to-accent-500 bg-clip-text text-transparent animate-gradient">
+              Riwayat Poin Loyalitas
+            </h2>
+          </div>
+
+          {loyaltyPoints.length === 0 ? (
+            <div className="bg-gradient-to-br from-neutral-900/60 via-neutral-800/60 to-neutral-900/60 backdrop-blur-xl border border-neutral-700/30 rounded-2xl p-12 text-center shadow-2xl">
+              <Award className="w-16 h-16 text-neutral-600 mx-auto mb-4" />
+              <p className="text-neutral-400 text-lg">Belum ada poin loyalitas</p>
+              <p className="text-neutral-500 text-sm mt-2">Selesaikan booking untuk mendapatkan poin</p>
+            </div>
+          ) : (
+            <div className="space-y-4 custom-scrollbar max-h-[600px] overflow-y-auto pr-2">
+              {loyaltyPoints.map((point, index) => (
+                <div
+                  key={point.id}
+                  className="group relative bg-gradient-to-br from-neutral-900/60 via-neutral-800/60 to-neutral-900/60 backdrop-blur-xl border border-neutral-700/30 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-accent-500/10 transition-all duration-500 hover:scale-[1.02] hover:border-accent-500/40 overflow-hidden animate-slide-up"
+                  style={{animationDelay: `${index * 0.1}s`}}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <div className="relative z-10 flex justify-between items-center">
+                    <div className="flex-1">
+                      <p className="text-white font-bold text-lg mb-2 group-hover:text-accent-400 transition-colors duration-300">{point.description}</p>
+                      <p className="text-sm text-neutral-400 flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        {new Date(point.created_at).toLocaleDateString('id-ID', {
+                          weekday: 'long',
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        })}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 px-5 py-3 bg-gradient-to-br from-accent-500/20 to-accent-600/30 rounded-xl border border-accent-500/30 group-hover:shadow-lg group-hover:shadow-accent-500/20 transition-all duration-300">
+                      <Star className="w-6 h-6 text-accent-400" />
+                      <span className="text-accent-400 font-bold text-2xl">+{point.points}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slide-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out forwards;
+        }
+
+        .animate-slide-up {
+          animation: slide-up 0.6s ease-out forwards;
+        }
+
+        .delay-100 {
+          animation-delay: 0.1s;
+          opacity: 0;
+        }
+
+        .delay-200 {
+          animation-delay: 0.2s;
+          opacity: 0;
+        }
+
+        .delay-300 {
+          animation-delay: 0.3s;
+          opacity: 0;
+        }
+
+        .delay-1000 {
+          animation-delay: 1s;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(38, 38, 38, 0.5);
+          border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(250, 204, 21, 0.3);
+          border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(250, 204, 21, 0.5);
+        }
+      `}</style>
+    </div>
+  )
+}
