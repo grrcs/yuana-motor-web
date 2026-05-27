@@ -47,7 +47,7 @@ export default function ConsultationForm() {
   };
 
   return (
-    <section id="konsultasi" className="py-20 bg-neutral-800 text-white">
+    <section id="konsultasi" className="py-20 bg-neutral-900 text-white">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
@@ -143,7 +143,7 @@ export default function ConsultationForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full p-4 bg-green-600 hover:bg-green-700 font-semibold rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-green-600/20 flex items-center justify-center gap-2"
             >
               <MessageSquare className="w-5 h-5" />
               {isSubmitting ? 'Membuka WhatsApp...' : 'Konsultasi via WhatsApp'}

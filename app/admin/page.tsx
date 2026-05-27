@@ -8,7 +8,7 @@ import {
   Calendar, Clock, User, Phone, Car, MessageSquare, 
   CheckCircle, XCircle, Loader2, Edit, Trash2, 
   LayoutDashboard, RefreshCw, Search, Filter, ShieldAlert, Star,
-  TrendingUp, BarChart3, Users, DollarSign
+  TrendingUp, BarChart3
 } from "lucide-react";
 import { supabase, type Booking, type Review } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
@@ -38,29 +38,29 @@ export default function AdminPage() {
     cancelled: 0,
   });
 
-  useEffect(() => {
-    fetchBookings();
-    fetchReviews();
-  }, []);
-
-  // Auth check
+  // Auth check first
   useEffect(() => {
     if (!authLoading) {
       if (!user) {
         router.push('/login')
       } else if (!isAdmin) {
         router.push('/dashboard')
+      } else {
+        fetchBookings();
+        fetchReviews();
       }
     }
   }, [user, isAdmin, authLoading, router])
 
-  // Show loading while checking auth
+  // Show loading while checking auth or not authorized
   if (authLoading || !user || !isAdmin) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-brand-500 animate-spin mx-auto mb-4" />
-          <p className="text-neutral-400">Checking access...</p>
+          <p className="text-neutral-400">
+            {authLoading ? 'Cek akses...' : !user ? 'Arahno mlebu...' : 'Ora duwe akses...'}
+          </p>
         </div>
       </div>
     )

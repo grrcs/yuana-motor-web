@@ -369,7 +369,7 @@ export default function BookingForm() {
             <button
               type="submit"
               disabled={isSubmitting || (availableSlots !== null && availableSlots <= 0)}
-              className="btn-primary w-full p-3 bg-orange-500 hover:bg-orange-600 font-semibold rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 bg-gradient-to-r from-brand-500 to-accent-500 text-neutral-900 font-bold rounded-xl hover:from-accent-500 hover:to-yellow-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2"
             >
               {isSubmitting ? 'Memproses...' : 'Booking Sekarang'}
             </button>

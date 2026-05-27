@@ -103,7 +103,7 @@ export default function DashboardPage() {
   }
 
   const handleLogout = async () => {
-    await signOut()
+    await supabase.auth.signOut()
     router.push('/')
   }
 
@@ -272,6 +272,7 @@ export default function DashboardPage() {
                   {showReviewForm === booking.booking_number && (
                     <div className="mt-6 pt-6 border-t border-neutral-800">
                       <ReviewForm
+                        bookingId={booking.id}
                         bookingNumber={booking.booking_number}
                         onSuccess={() => {
                           setShowReviewForm(null)
