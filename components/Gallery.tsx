@@ -40,7 +40,7 @@ export default function Gallery() {
         >
           <span className="section-label">Galeri Kami</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Fasilitas Bengkel Modern
+            Fasilitas Yuana Garage
           </h2>
           <p className="text-neutral-400 max-w-2xl mx-auto">
             Lihat langsung fasilitas dan area kerja bengkel kami yang lengkap dan profesional
