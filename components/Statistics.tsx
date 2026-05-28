@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 
 const stats = [
   { value: 1000, suffix: "+", label: "Kendaraan Diservis" },
-  { value: 10, suffix: "+", label: "Tahun Pengalaman" },
-  { value: 15, suffix: "+", label: "Mekanik Ahli" },
+  { value: 7, suffix: "+", label: "Tahun Pengalaman" },
+  { value: 2, suffix: "+", label: "Mekanik Ahli" },
   { value: 98, suffix: "%", label: "Kepuasan Pelanggan" },
 ];
 
