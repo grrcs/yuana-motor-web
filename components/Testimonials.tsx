@@ -6,21 +6,33 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     name: "Budi Santoso",
-    role: "Pemilik Honda Beat",
-    content: "Pelayanan sangat memuaskan, mekaniknya profesional dan harga terjangkau. Recommended!",
+    role: "Pemilik Honda GL 100",
+    content: "Motor tua kayak GL 100 saya ditangani dengan sabar. Cari sparepartnya susah tapi di sini bisa dicarikan. Hasil servisnya mulus, jalan lagi kenceng!",
     rating: 5,
   },
   {
     name: "Siti Nurhaliza",
     role: "Pemilik Honda Win",
-    content: "Servis mobil di sini selalu cepat dan hasilnya bagus. Sudah langganan 2 tahun.",
+    content: "Honda Win 1984 saya dirombak total di sini. Mekaniknya paham banget sama motor lawas, hasilnya rapi dan orisinil. Puas banget!",
     rating: 5,
   },
   {
     name: "Ahmad Fauzi",
     role: "Pemilik Yamaha NMAX",
-    content: "Bengkel terpercaya dengan harga yang jujur. Tidak ada biaya tersembunyi.",
+    content: "Servis rutin NMAX saya, harga wajar dan pengerjaannya cepet. Cuma kadang antri karena ramai, tapi worth it lah.",
+    rating: 4,
+  },
+  {
+    name: "Supardi",
+    role: "Pemilik Honda Astrea",
+    content: "Astrea 800 kesayangan saya sudah seperti baru lagi setelah diservis di sini. Karburatornya dibersihin, tarikan enteng. Harga ramah di kantong.",
     rating: 5,
+  },
+  {
+    name: "Dewi Lestari",
+    role: "Pemilik Honda Vario",
+    content: "Vario saya mogok di jalan, langsung hubungi Yuana Motor. Datang cepet dan langsung kelar. Agak mahal sih tapi sebanding sama pelayanannya.",
+    rating: 4,
   },
 ];
 

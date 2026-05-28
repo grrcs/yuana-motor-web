@@ -2,16 +2,40 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Wrench, Package, Warehouse } from "lucide-react";
 
-const galleryImages = [
-  { src: "/bengkel1.jpeg", span: "col-span-2 row-span-2", alt: "Workshop Area 1" },
-  { src: "/bengkel2.jpeg", span: "col-span-1 row-span-1", alt: "Workshop Area 2" },
-  { src: "/bengkel3.jpeg", span: "col-span-1 row-span-1", alt: "Workshop Area 3" },
-  { src: "/bengkel4.jpeg", span: "col-span-1 row-span-2", alt: "Workshop Area 4" },
-  { src: "/bengkel5.jpeg", span: "col-span-2 row-span-1", alt: "Workshop Area 5" },
-  { src: "/bengkel6.jpeg", span: "col-span-1 row-span-1", alt: "Workshop Area 6" },
-  { src: "/bengkel7.jpeg", span: "col-span-1 row-span-1", alt: "Workshop Area 7" },
+const galleryCategories = [
+  {
+    id: "area-kerja",
+    label: "Area Kerja",
+    icon: Wrench,
+    images: [
+      { src: "/bengkel1.jpeg", span: "col-span-2 row-span-2", alt: "Area Kerja Utama" },
+      { src: "/bengkel2.jpeg", span: "col-span-1 row-span-1", alt: "Area Kerja Mekanik" },
+      { src: "/bengkel3.jpeg", span: "col-span-1 row-span-1", alt: "Meja Pembayaran" },
+      { src: "/bengkel8.jpg", span: "col-span-1 row-span-1", alt: "Gudang Sparepart" },
+    ],
+  },
+  {
+    id: "part-onderdil",
+    label: "Part & Onderdil",
+    icon: Package,
+    images: [
+      { src: "/sparepart45jpg.jpg", span: "col-span-1 row-span-2", alt: "Rak Sparepart Original" },
+      { src: "/sparepart4.jpg", span: "col-span-2 row-span-1", alt: "Koleksi Onderdil" },
+      { src: "/sparepart2.jpg", span: "col-span-2 row-span-1", alt: "Aksesoris Motor" },
+      { src: "/sparepart5.jpg", span: "col-span-2 row-span-1", alt: "Part Body Motor" },
+    ],
+  },
+  {
+    id: "garasi",
+    label: "Garasi Bengkel",
+    icon: Warehouse,
+    images: [
+      { src: "/bengkel6.jpeg", span: "col-span-1 row-span-1", alt: "Garasi Bengkel Tampak Depan" },
+      { src: "/bengkel7.jpeg", span: "col-span-1 row-span-1", alt: "Garasi Bengkel Tampak Samping" },
+    ],
+  },
 ];
 
 export default function Gallery() {
@@ -19,7 +43,6 @@ export default function Gallery() {
 
   return (
     <section id="gallery" className="py-20 lg:py-32 relative overflow-hidden">
-      {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div
           className="absolute inset-0"
@@ -30,7 +53,6 @@ export default function Gallery() {
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -47,57 +69,71 @@ export default function Gallery() {
           </p>
         </motion.div>
 
-        {/* Bento Grid Gallery */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-7xl mx-auto"
-        >
-          {galleryImages.map((image, index) => (
+        {galleryCategories.map((category, catIndex) => (
+          <div key={category.id} className="mb-16 last:mb-0">
             <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`${image.span} relative group cursor-pointer overflow-hidden rounded-2xl`}
-              style={{ minHeight: "200px" }}
-              onClick={() => setSelectedImage(image.src)}
+              transition={{ duration: 0.5, delay: catIndex * 0.1 }}
+              className="flex items-center gap-3 mb-8"
             >
-              {/* Image */}
-              <div className="absolute inset-0 bg-neutral-900">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
+              <div className="w-10 h-10 bg-brand-500/10 rounded-lg flex items-center justify-center">
+                <category.icon className="w-5 h-5 text-brand-500" />
               </div>
-
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-              {/* Hover Content */}
-              <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  <p className="text-white font-semibold text-lg">{image.alt}</p>
-                  <p className="text-neutral-300 text-sm">Klik untuk memperbesar</p>
-                </div>
+              <div>
+                <h3 className="text-2xl font-bold text-white">{category.label}</h3>
+                <p className="text-sm text-neutral-400">{category.images.length} foto</p>
               </div>
-
-              {/* Border Glow Effect */}
-              <div className="absolute inset-0 rounded-2xl border-2 border-primary-500/0 group-hover:border-primary-500/50 transition-all duration-300" />
+              <div className="flex-1 h-px bg-neutral-800 ml-4" />
             </motion.div>
-          ))}
-        </motion.div>
 
-        {/* Decorative Elements */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-7xl mx-auto"
+            >
+              {category.images.map((image, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className={`${image.span} relative group cursor-pointer overflow-hidden rounded-2xl`}
+                  style={{ minHeight: "200px" }}
+                  onClick={() => setSelectedImage(image.src)}
+                >
+                  <div className="absolute inset-0 bg-neutral-900">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  </div>
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <p className="text-white font-semibold text-lg">{image.alt}</p>
+                      <p className="text-neutral-300 text-sm">Klik untuk memperbesar</p>
+                    </div>
+                  </div>
+
+                  <div className="absolute inset-0 rounded-2xl border-2 border-primary-500/0 group-hover:border-primary-500/50 transition-all duration-300" />
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        ))}
+
         <div className="absolute top-20 left-10 w-32 h-32 bg-primary-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-40 h-40 bg-primary-500/10 rounded-full blur-3xl" />
       </div>
 
-      {/* Lightbox Modal */}
       {selectedImage && (
         <motion.div
           initial={{ opacity: 0 }}
