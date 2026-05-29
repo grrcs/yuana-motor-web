@@ -4,6 +4,7 @@ import About from "@/components/About";
 import Features from "@/components/Features";
 import Services from "@/components/Services";
 import Gallery from "@/components/Gallery";
+import Mechanics from "@/components/Mechanics";
 import Statistics from "@/components/Statistics";
 import Testimonials from "@/components/Testimonials";
 import BookingForm from "@/components/BookingForm";
@@ -19,6 +20,7 @@ export default function Home() {
       <Features />
       <Services />
       <Gallery />
+      <Mechanics />
       <Statistics />
       <Testimonials />
       <BookingForm />
