@@ -53,6 +53,13 @@ export default function ReviewForm({ bookingId, bookingNumber, onSuccess }: Revi
 
       if (insertError) throw insertError;
 
+      const { error: updateError } = await supabase
+        .from("bookings")
+        .update({ reviewed: true })
+        .eq("id", bookingId);
+
+      if (updateError) throw updateError;
+
       setSuccess(true);
       setRating(0);
       setComment("");

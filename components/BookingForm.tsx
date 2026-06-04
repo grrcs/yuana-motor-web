@@ -86,11 +86,33 @@ export default function BookingForm() {
     setSubmitStatus({ type: null, message: '' });
 
     try {
-      // Generate booking number di frontend
-      const now = new Date();
-      const dateStr = now.toISOString().split('T')[0].replace(/-/g, ''); // YYYYMMDD
-      const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-      const bookingNumber = `BK-${dateStr}-${randomNum}`;
+      // Generate nomor booking unik dengan retry
+      let bookingNumber = '';
+      let isUnique = false;
+      let retryCount = 0;
+      const maxRetries = 5;
+
+      while (!isUnique && retryCount < maxRetries) {
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0].replace(/-/g, '');
+        const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+        bookingNumber = `BK-${dateStr}-${randomNum}`;
+
+        const { data: existing } = await supabase
+          .from('bookings')
+          .select('id')
+          .eq('booking_number', bookingNumber)
+          .maybeSingle();
+
+        if (!existing) {
+          isUnique = true;
+        }
+        retryCount++;
+      }
+
+      if (!isUnique) {
+        throw new Error('Gagal generate nomor booking unik, coba lagi');
+      }
 
       // Simpan ke database
       const { data, error } = await supabase

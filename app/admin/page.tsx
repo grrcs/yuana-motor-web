@@ -142,8 +142,28 @@ export default function AdminPage() {
     cancelled: [],
   };
 
+  const manageSlotCapacity = async (booking: Booking, newStatus: StatusType) => {
+    const oldStatus = booking.status;
+    try {
+      if (oldStatus !== 'confirmed' && newStatus === 'confirmed') {
+        await supabase.rpc('decrement_slot', {
+          p_date: booking.booking_date,
+          p_time: booking.booking_time,
+        });
+      } else if ((oldStatus === 'confirmed' || oldStatus === 'in_progress') && newStatus === 'cancelled') {
+        await supabase.rpc('increment_slot', {
+          p_date: booking.booking_date,
+          p_time: booking.booking_time,
+        });
+      }
+    } catch (err) {
+      console.error('Gagal update slot (non-fatal):', err);
+    }
+  };
+
   const updateBookingStatus = async (bookingId: string, newStatus: StatusType) => {
-    const currentStatus = bookings.find(b => b.id === bookingId)?.status;
+    const currentBooking = bookings.find(b => b.id === bookingId);
+    const currentStatus = currentBooking?.status;
     if (currentStatus && !validTransitions[currentStatus as StatusType]?.includes(newStatus)) {
       alert(`Status ${currentStatus} ora bisa langsung dadi ${newStatus}. Kudu bertahap!`);
       return;
@@ -153,10 +173,14 @@ export default function AdminPage() {
     try {
       const { error } = await supabase
         .from('bookings')
-        .update({ status: newStatus })
+        .update({ status: newStatus, updated_at: new Date().toISOString() })
         .eq('id', bookingId);
 
       if (error) throw error;
+
+      if (currentBooking) {
+        await manageSlotCapacity(currentBooking, newStatus);
+      }
 
       await fetchBookings();
       setSelectedBooking(null);
