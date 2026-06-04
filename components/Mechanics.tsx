@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Star, MessageCircle, Wrench } from "lucide-react";
+import { MessageCircle, Wrench } from "lucide-react";
 
 const mechanics = [
   {
@@ -82,7 +82,6 @@ export default function Mechanics() {
                   <div className="flex-1 text-center sm:text-left">
                     <div className="flex items-center gap-2 justify-center sm:justify-start mb-1">
                       <h3 className="text-xl font-bold text-white">{mechanic.name}</h3>
-                      <Star className="w-4 h-4 text-brand-500 fill-brand-500" />
                     </div>
                     <p className="text-brand-500 font-medium text-sm mb-3">{mechanic.role}</p>
                     <p className="text-neutral-400 text-sm mb-4">{mechanic.description}</p>

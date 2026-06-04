@@ -134,7 +134,21 @@ export default function AdminPage() {
     }
   };
 
+  const validTransitions: Record<StatusType, StatusType[]> = {
+    pending: ['confirmed', 'cancelled'],
+    confirmed: ['in_progress', 'cancelled'],
+    in_progress: ['completed', 'cancelled'],
+    completed: [],
+    cancelled: [],
+  };
+
   const updateBookingStatus = async (bookingId: string, newStatus: StatusType) => {
+    const currentStatus = bookings.find(b => b.id === bookingId)?.status;
+    if (currentStatus && !validTransitions[currentStatus as StatusType]?.includes(newStatus)) {
+      alert(`Status ${currentStatus} ora bisa langsung dadi ${newStatus}. Kudu bertahap!`);
+      return;
+    }
+
     setIsUpdating(true);
     try {
       const { error } = await supabase
@@ -996,35 +1010,35 @@ export default function AdminPage() {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   <button
                     onClick={() => updateBookingStatus(selectedBooking.id, 'pending')}
-                    disabled={isUpdating || selectedBooking.status === 'pending'}
+                    disabled={isUpdating || !validTransitions[selectedBooking.status as StatusType]?.includes('pending')}
                     className="p-3 bg-yellow-900/30 hover:bg-yellow-900/50 border border-yellow-700 rounded text-yellow-300 disabled:opacity-50 disabled:cursor-not-allowed transition"
                   >
                     Menunggu
                   </button>
                   <button
                     onClick={() => updateBookingStatus(selectedBooking.id, 'confirmed')}
-                    disabled={isUpdating || selectedBooking.status === 'confirmed'}
+                    disabled={isUpdating || !validTransitions[selectedBooking.status as StatusType]?.includes('confirmed')}
                     className="p-3 bg-blue-900/30 hover:bg-blue-900/50 border border-blue-700 rounded text-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition"
                   >
                     Dikonfirmasi
                   </button>
                   <button
                     onClick={() => updateBookingStatus(selectedBooking.id, 'in_progress')}
-                    disabled={isUpdating || selectedBooking.status === 'in_progress'}
+                    disabled={isUpdating || !validTransitions[selectedBooking.status as StatusType]?.includes('in_progress')}
                     className="p-3 bg-purple-900/30 hover:bg-purple-900/50 border border-purple-700 rounded text-purple-300 disabled:opacity-50 disabled:cursor-not-allowed transition"
                   >
                     Dikerjakan
                   </button>
                   <button
                     onClick={() => updateBookingStatus(selectedBooking.id, 'completed')}
-                    disabled={isUpdating || selectedBooking.status === 'completed'}
+                    disabled={isUpdating || !validTransitions[selectedBooking.status as StatusType]?.includes('completed')}
                     className="p-3 bg-green-900/30 hover:bg-green-900/50 border border-green-700 rounded text-green-300 disabled:opacity-50 disabled:cursor-not-allowed transition"
                   >
                     Selesai
                   </button>
                   <button
                     onClick={() => updateBookingStatus(selectedBooking.id, 'cancelled')}
-                    disabled={isUpdating || selectedBooking.status === 'cancelled'}
+                    disabled={isUpdating || !validTransitions[selectedBooking.status as StatusType]?.includes('cancelled')}
                     className="p-3 bg-red-900/30 hover:bg-red-900/50 border border-red-700 rounded text-red-300 disabled:opacity-50 disabled:cursor-not-allowed transition"
                   >
                     Dibatalkan
